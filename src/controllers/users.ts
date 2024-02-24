@@ -29,16 +29,15 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { username, email } = req.body;
+    const { username } = req.body;
 
     if (!username) {
-      return res.sendStatus(400).send({ message: 'Invalid data.' });
+      return res.status(400).send({ message: 'Invalid data.' });
     }
 
     const user = await getUserById(id);
 
     user.username = username;
-    user.email = email;
     await user.save();
 
     return res.status(200).json(user).end();

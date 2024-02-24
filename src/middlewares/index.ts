@@ -12,13 +12,13 @@ export const isAuthenticated = async (
     const sessionToken = req.cookies['EXPRESS-AUTH'];
 
     if (!sessionToken) {
-      return res.sendStatus(403).send({ message: 'Not authorized.' });
+      return res.status(403).send({ message: 'Not authorized.' }).end();
     }
 
     const existingUser = await getUserBySessionToken(sessionToken);
 
     if (!existingUser) {
-      return res.sendStatus(403).send({ message: 'Not authenticated.' });
+      return res.status(403).send({ message: 'Not authenticated.' }).end();
     }
 
     merge(req, { identity: existingUser });
@@ -40,11 +40,11 @@ export const isOwner = async (
     const currentUserId = get(req, 'identity._id') as string;
 
     if (!currentUserId) {
-      return res.sendStatus(400).send({ message: 'Invalid data.' });
+      return res.status(400).send({ message: 'Invalid data.' }).end();
     }
 
     if (currentUserId.toString() !== id) {
-      return res.sendStatus(403).send({ message: 'Not authorized.' });
+      return res.status(403).send({ message: 'Not authorized.' }).end();
     }
 
     next();

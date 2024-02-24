@@ -15,13 +15,13 @@ export const login = async (req: Request, res: Response) => {
     );
 
     if (!user) {
-      return res.sendStatus(403).send({ message: 'User not found.' });
+      return res.status(403).send({ message: 'User not found.' });
     }
 
     const expectedHash = authentication(user.authentication.salt, password);
 
     if (user.authentication.password != expectedHash) {
-      return res.sendStatus(403).send({ message: 'Invalid credentials.' });
+      return res.status(403).send({ message: 'Invalid credentials.' });
     }
 
     const salt = random();
@@ -49,13 +49,13 @@ export const register = async (req: Request, res: Response) => {
     const { email, password, username } = req.body;
 
     if (!email || !password || !username) {
-      return res.sendStatus(400).send({ message: 'Invalid data.' });
+      return res.status(400).send({ message: 'Invalid data.' });
     }
 
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
-      return res.sendStatus(400).send({ message: 'User already exists.' });
+      return res.status(400).send({ message: 'User already exists.' });
     }
 
     const salt = random();
